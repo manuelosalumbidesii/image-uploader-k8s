@@ -21,9 +21,9 @@ jobs:
     - name: Build and push backend image
       run: |
         docker build -t ivosalumbides/image-uploader-backend:latest ./micro-uploader-backend
-        docker push yourdockerhubuser/image-uploader-backend:latest
+        docker push ivosalumbides/image-uploader-backend:latest
 
     - name: Build and push frontend image
       run: |
         docker build -t ivosalumbides/image-uploader-frontend:latest ./micro-uploader-frontend
-        docker push yourdockerhubuser/image-uploader-frontend:latest
+        docker push ivosalumbides/image-uploader-frontend:latest
