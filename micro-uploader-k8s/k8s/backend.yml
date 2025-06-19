@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uploader-backend
+  namespace: image-uploader
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uploader-backend
+  template:
+    metadata:
+      labels:
+        app: uploader-backend
+    spec:
+      containers:
+        - name: uploader-backend
+          image: uploader-backend:local
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: uploads-volume
+              mountPath: /app/uploads
+      volumes:
+        - name: uploads-volume
+          persistentVolumeClaim:
+            claimName: uploads-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: uploader-backend
+  namespace: image-uploader
+spec:
+  selector:
+    app: uploader-backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP

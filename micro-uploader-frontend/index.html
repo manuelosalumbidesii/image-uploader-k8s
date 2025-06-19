@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📷 Image Uploader</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>📤 Upload an Image</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" name="image" required />
+      <button type="submit">Upload</button>
+    </form>
+
+    <h2>🖼️ Uploaded Images</h2>
+    <div id="imageList" class="gallery"></div>
+  </div>
+
+<script>
+document.getElementById("uploadForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+
+  fetch("/api/upload", {
+    method: "POST",
+    body: formData
+  })
+    .then(res => res.json())
+    .then(() => {
+      loadImages();
+      this.reset();
+    })
+    .catch(() => alert("Upload failed"));
+});
+
+function loadImages() {
+  fetch("/api/images")
+    .then(res => res.json())
+    .then(images => {
+      const container = document.getElementById("imageList");
+      container.innerHTML = "";
+      images.forEach(filename => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <img src="/uploads/${filename}" width="100">
+          <button onclick="deleteImage('${filename}')">Delete</button>
+        `;
+        container.appendChild(div);
+      });
+    });
+}
+
+function deleteImage(filename) {
+  fetch(`/api/images/${filename}`, {
+    method: "DELETE"
+  })
+    .then(res => {
+      if (res.ok) {
+        loadImages();
+      } else {
+        alert("Failed to delete image");
+      }
+    });
+}
+
+loadImages();
+</script>
+</body>
+</html>
