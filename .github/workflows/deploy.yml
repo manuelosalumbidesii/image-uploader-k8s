@@ -86,7 +86,7 @@ jobs:
 
     ##############################
     # 📤 Push GHCR Images
-    ##############################
+  
     - name: Push backend image to GHCR
       run: docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/image-uploader-backend:latest
 
