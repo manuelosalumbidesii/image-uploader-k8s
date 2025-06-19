@@ -2,7 +2,10 @@ from flask import Flask, request, jsonify, send_from_directory, abort
 import os
 from util import allowed_file, save_file, list_uploaded_files
 
+
 UPLOAD_FOLDER = '/app/uploads'
+
+
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER

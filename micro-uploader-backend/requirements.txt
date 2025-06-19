@@ -1,3 +1,4 @@
 flask
 werkzeug
 flake8
+pytest
